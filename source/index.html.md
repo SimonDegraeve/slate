@@ -25,7 +25,21 @@ We have language bindings in Shell, Ruby, and Python! You can view code examples
 
 This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
 
-# Authentication
+# Topic
+## Authentication
+## Errors
+## Expanding Objects
+## Idempotent Request
+## Metadata
+## Pagination
+## Request IDs
+## Versioning
+
+# Core Resources
+## Organization
+### The organization object
+### Retrieve an organization
+### List all organizations
 
 > To authorize, use this code:
 
