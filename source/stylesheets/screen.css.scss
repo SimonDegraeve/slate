@@ -69,6 +69,7 @@ html, body {
   background-color: $nav-bg;
   font-size: 13px;
   font-weight: bold;
+  border-right: 1px solid #f0f4f7;
 
   // language selector for mobile devices
   .lang-selector {
@@ -173,31 +174,29 @@ html, body {
 
   // This is the currently selected ToC entry
   .tocify-focus {
-    box-shadow: 0px 1px 0px $nav-active-shadow;
     background-color: $nav-active-bg;
     color: $nav-active-text;
+    font-weight: 700;
   }
 
   // Subheaders are the submenus that slide open
   // in the table of contents.
   .tocify-subheader {
-    display: none; // tocify will override this when needed
     background-color: $nav-subitem-bg;
     font-weight: 500;
+
     .tocify-item>a {
-      padding-left: $nav-padding + $nav-indent;
+      padding-left: 20px;
       font-size: 12px;
     }
 
-    // for embossed look:
-    @include embossed-bg;
     &>li:last-child {
       box-shadow: none; // otherwise it'll overflow out of the subheader
     }
     .tocify-subheader {
         .tocify-item>a {
           // Styling here for a level 2 nesting. For example ->
-          padding-left: $nav-padding + $nav-indent * 2;
+          padding-left: 20px;
           font-size: 12px;
         }
       }
@@ -280,7 +279,7 @@ html, body {
   // half of the content always this background color.
   .dark-box {
     width: $examples-width;
-    background-color: $examples-bg;
+    background-color: $code-bg;
     position: absolute;
     right: 0;
     top: 0;
@@ -290,7 +289,7 @@ html, body {
   .lang-selector {
     position: fixed;
     z-index: 50;
-    border-bottom: 5px solid $lang-select-active-bg;
+    border-bottom: 5px solid $code-bg;
   }
 }
 
@@ -301,20 +300,22 @@ html, body {
   a {
     display: block;
     float:left;
-    color: $lang-select-text;
+    color: white;
     text-decoration: none;
     padding: 0 10px;
     line-height: 30px;
     outline: 0;
+    margin: 10px;
+    border-radius: 5px;
 
     &:active, &:focus {
-      background-color: $lang-select-pressed-bg;
+      background-color: rgba(#1CBED2, .5);
       color: $lang-select-pressed-text;
     }
 
     &.active {
-      background-color: $lang-select-active-bg;
-      color: $lang-select-active-text;
+      background-color: #1CBED2;
+      color: white;
     }
   }
 
@@ -365,10 +366,9 @@ html, body {
     font-size: 30px;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
-    border-bottom: 1px solid #ccc;
     margin-bottom: $h1-margin-bottom;
     margin-top: 2em;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid rgba(#ccc, .3);
     background: white;
   }
 
@@ -382,7 +382,6 @@ html, body {
     font-size: 20px;
     margin-top: 4em;
     margin-bottom: 0;
-    border-top: 1px solid #ccc;
     padding-top: 1.2em;
     padding-bottom: 1.2em;
     background: white;
@@ -529,6 +528,7 @@ html, body {
 
 .content {
   pre, blockquote {
+    position: relative;
     background-color: $code-bg;
     color: #fff;
 
@@ -631,4 +631,12 @@ html, body {
 
 .highlight, .highlight .w {
   background-color: $code-bg;
+}
+
+.cw-CodeOverlay {
+  position: absolute;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background: $code-bg;
 }
