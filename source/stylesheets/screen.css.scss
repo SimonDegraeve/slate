@@ -307,6 +307,7 @@ html, body {
     outline: 0;
     margin: 10px;
     border-radius: 5px;
+    text-shadow: 1px 1px 1px rgba(24,24,24, .3);
 
     &:active, &:focus {
       background-color: rgba(#1CBED2, .5);
