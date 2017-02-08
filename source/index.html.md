@@ -95,18 +95,6 @@ A Subcontracting plan contains the pricing information for different tasks perfo
             48.94775898298233
           ],
           [
-            2.52410888671875,
-            48.95046462340883
-          ],
-          [
-            2.54058837890625,
-            48.77972266402536
-          ],
-          [
-            2.3263549804687496,
-            48.72720881940671
-          ],
-          [
             2.050323486328125,
             48.811385499847546
           ],
@@ -196,10 +184,18 @@ A Subcontracting plan contains the pricing information for different tasks perfo
     }
 }
 ```
+## Hubs
+A specific shape reffering to an area or a location where a worker can start or end its shift.
 
 ## Workers
+A worker is a user that can perform a workload. It must have a schedule, a hub and a vehicle.
+A worker can also be associated with a subset of Subcontracting Plans in order to limit what kind of workloads, 
+he or she can perform.
+
 ## Teams
-## Hubs
+A team is a group of users containing workers. 
+Any team member or user with write permissions can swift workloads between members.
+
 
 # Transportation
 ## Destinations
@@ -210,6 +206,7 @@ A Subcontracting plan contains the pricing information for different tasks perfo
 ## Tours
 
 # Merchants
+## Stock
 
 # Notifications
 ## Devices
