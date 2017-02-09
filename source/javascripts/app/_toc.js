@@ -5,11 +5,6 @@
 (function (global) {
   'use strict';
 
-  var closeToc = function() {
-    $(".tocify-wrapper").removeClass('open');
-    $("#nav-button").removeClass('open');
-  };
-
   var makeToc = function() {
     global.toc = $("#toc").tocify({
       selectors: 'h1, h2, h3',
@@ -21,6 +16,7 @@
       ignoreSelector: '.toc-ignore',
       highlightOffset: 60,
       scrollTo: -1,
+      showAndHide: false,
       scrollHistory: true,
       hashGenerator: function (text, element) {
         return element.prop('id');
@@ -32,9 +28,6 @@
       $("#nav-button").toggleClass('open');
       return false;
     });
-
-    $(".page-wrapper").click(closeToc);
-    $(".tocify-item").click(closeToc);
   };
 
   // Hack to make already open sections to start opened,
