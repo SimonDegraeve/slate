@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <title>API Reference</title>
 
     <style>
@@ -91,7 +92,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;,&quot;javascript&quot;]">
+  <body class="index" data-languages="[&quot;shell&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -99,12 +100,11 @@
       </span>
     </a>
     <div class="tocify-wrapper">
-      <img src="images/logo.png" alt="Logo" />
+      <div class='cw-Logo'>
+        <img src="images/logo.png" alt="Logo" />
+      </div>
         <div class="lang-selector">
               <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
-              <a href="#" data-language-name="javascript">javascript</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -113,20 +113,13 @@
       <div id="toc">
       </div>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+            <li><a href='https://api.colisweb.com/'>Current Application</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
         <h1 id="introduction">Introduction</h1>
-
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
-
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
-
-<p>This example API documentation page was created with <a href="https://github.com/tripit/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&rsquo;s documentation.</p>
 
 <h1 id="topic">Topic</h1>
 
@@ -148,7 +141,7 @@
 
 <h1 id="core-resources">Core Resources</h1>
 
-<h2 id="organization">Organization</h2>
+<h2 id="organizations">Organizations</h2>
 
 <h3 id="the-organization-object">The organization object</h3>
 
@@ -156,153 +149,378 @@
 
 <h3 id="list-all-organizations">List all organizations</h3>
 
+<h2 id="users">Users</h2>
+
+<h2 id="shapes">Shapes</h2>
+
+<p>A Shape is a GeoJSON feature object with type <code class="prettyprint">Feature</code>, ee <a href="http://geojson.org/geojson-spec.html#feature-objects">geojson.org</a>.</p>
+
+<p>A Shape has <code class="prettyprint">properties</code> associated with the Geometry object.</p>
+
+<h3 id="postal-codes">Postal Codes</h3>
+
 <blockquote>
-<p>To authorize, use this code:</p>
+<p>Postal Code Shape Structure</p>
 </blockquote>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"geometry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Point"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">125.6</span><span class="p">,</span><span class="w"> </span><span class="mf">10.1</span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"postal_code"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"postal_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"59000"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"insee_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"59000"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"city_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lille"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Euratechnolgies"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h2 id="invoices">Invoices</h2>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<p>Invoices are statements of what an organization owes to an other organization for a particular billing period, 
+including subscriptions, invoice items, and any automatic proration adjustments if necessary.
+<a href="https://stripe.com/docs/api#invoices">Stripe doc</a></p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+<h2 id="invoice-items">Invoice Items</h2>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-</code></pre>
+<p>Sometimes you want to add a charge or credit to a customer but only actually charge the customer&rsquo;s card at the end of 
+a regular billing cycle. see <a href="https://stripe.com/docs/api#invoiceitems">Stripe doc</a></p>
+
+<h2 id="plans">Plans</h2>
+
+<p>A plan contains the pricing information for different services and feature levels provided by an organization.</p>
+
+<h2 id="subscriptions">Subscriptions</h2>
+
+<p>Subscriptions allow an organization to charge an other organization on a recurring basis. 
+A subscription ties a customer to a particular plan.</p>
+
+<h2 id="documents">Documents</h2>
+
+<h1 id="transporters">Transporters</h1>
+
+<h2 id="vehicles">Vehicles</h2>
+
+<h2 id="subcontracting-plans">Subcontracting Plans</h2>
+
+<p>A Subcontracting plan contains the pricing information for different tasks performed by an organization.</p>
+
 <blockquote>
-<p>Make sure to replace <code class="prettyprint">meowmeowmeow</code> with your API key.</p>
+<p>Subcontracting Plans Structure</p>
 </blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Paris Semaine"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Feature"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"geometry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Polygon"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">[</span><span class="w">
+          </span><span class="p">[</span><span class="w">
+            </span><span class="mf">2.179412841796875</span><span class="p">,</span><span class="w">
+            </span><span class="mf">48.94775898298233</span><span class="w">
+          </span><span class="p">],</span><span class="w">
+          </span><span class="p">[</span><span class="w">
+            </span><span class="mf">2.050323486328125</span><span class="p">,</span><span class="w">
+            </span><span class="mf">48.811385499847546</span><span class="w">
+          </span><span class="p">],</span><span class="w">
+          </span><span class="p">[</span><span class="w">
+            </span><span class="mf">2.179412841796875</span><span class="p">,</span><span class="w">
+            </span><span class="mf">48.94775898298233</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"standalone"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"vehicle_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Moto"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"variable_costs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"day_of_week"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"day"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MONDAY"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"open"</span><span class="p">:</span><span class="w"> </span><span class="s2">"08:00"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"close"</span><span class="p">:</span><span class="w"> </span><span class="s2">"17:00"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"zone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Europe/Paris"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"cost"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nt">"footprints"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"additional_cost"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nt">"included_min"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kgM"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nt">"excluded_max"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kgM"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"additional_cost"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nt">"included_min"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">66</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kgM"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nt">"excluded_max"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kgM"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nt">"isochrones"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"additional_cost"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">-2</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nt">"included_min"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nt">"excluded_max"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"additional_cost"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nt">"included_min"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nt">"slot_sizes"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nt">"lags"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nt">"effective_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-11-18T14:03:33+00:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"expire_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-11-18T14:03:33+00:00"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h2 id="hubs">Hubs</h2>
 
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
+<p>A specific shape reffering to an area or a location where a worker can start or end its shift.</p>
 
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
+<h2 id="workers">Workers</h2>
 
-<p><code class="prettyprint">Authorization: meowmeowmeow</code></p>
+<p>A worker is a user that can perform a workload. It must have a schedule, a hub and a vehicle.
+A worker can also be associated with a subset of Subcontracting Plans in order to limit what kind of workloads, 
+he or she can perform.</p>
+
+<h2 id="teams">Teams</h2>
+
+<p>A team is a group of users containing workers. 
+Any team member or user with write permissions can swift workloads between members.</p>
+
+<h1 id="transportation">Transportation</h1>
+
+<h2 id="destinations">Destinations</h2>
+
+<h2 id="recipients">Recipients</h2>
+
+<h2 id="tasks">Tasks</h2>
+
+<h2 id="workloads">Workloads</h2>
+
+<h2 id="deliveries">Deliveries</h2>
+
+<h2 id="tours">Tours</h2>
+
+<h1 id="merchants">Merchants</h1>
+
+<h2 id="stock">Stock</h2>
+
+<h1 id="notifications">Notifications</h1>
+
+<h2 id="devices">Devices</h2>
+
+<p>User&rsquo;s devices in an organization.</p>
+
+<h2 id="notifications">Notifications</h2>
+
+<p>Notifications targeting a segment or individual users. You may target users in one of three ways using this method: 
+by Organization, by User, or by Device. At least one targeting parameter must be specified.
+See <a href="https://documentation.onesignal.com/reference#create-notification">OneSignal</a></p>
+
+<h1 id="webhooks">Webhooks</h1>
+
+<!---
+
+> To authorize, use this code:
+
+&ldquo;`ruby
+require &lsquo;kittn&rsquo;
+
+api = Kittn::APIClient.authorize!('meowmeowmeow&rsquo;)
+&rdquo;`
+
+&ldquo;`python
+import kittn
+
+api = kittn.authorize('meowmeowmeow&rsquo;)
+&rdquo;`
+
+&ldquo;`shell
+# With shell, you can just pass the correct header with each request
+curl &quot;api_endpoint_here&rdquo;
+  -H &ldquo;Authorization: meowmeowmeow&rdquo;
+&ldquo;`
+
+&rdquo;`javascript
+const kittn = require('kittn&rsquo;);
+
+let api = kittn.authorize('meowmeowmeow&rsquo;);
+&ldquo;`
+
+> Make sure to replace `meowmeowmeow` with your API key.
+
+Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+
+Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+
+`Authorization: meowmeowmeow`
 
 <aside class="notice">
 You must replace <code>meowmeowmeow</code> with your personal API key.
 </aside>
 
-<h1 id="kittens">Kittens</h1>
+# Kittens
 
-<h2 id="get-all-kittens">Get All Kittens</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+## Get All Kittens
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre><pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+&rdquo;`ruby
+require 'kittn&rsquo;
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre><pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+api = Kittn::APIClient.authorize!('meowmeowmeow&rsquo;)
+api.kittens.get
+&ldquo;`
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves all kittens.</p>
+&rdquo;`python
+import kittn
 
-<h3 id="http-request">HTTP Request</h3>
+api = kittn.authorize('meowmeowmeow&rsquo;)
+api.kittens.get()
+&ldquo;`
 
-<p><code class="prettyprint">GET http://example.com/api/kittens</code></p>
+&rdquo;`shell
+curl &ldquo;http://example.com/api/kittens&rdquo;
+  -H &ldquo;Authorization: meowmeowmeow&rdquo;
+&ldquo;`
 
-<h3 id="query-parameters">Query Parameters</h3>
+&rdquo;`javascript
+const kittn = require('kittn&rsquo;);
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
-</tr>
-<tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
-</tr>
-</tbody></table>
+let api = kittn.authorize('meowmeowmeow&rsquo;);
+let kittens = api.kittens.get();
+&ldquo;`
+
+> The above command returns JSON structured like this:
+
+&rdquo;`json
+[
+  {
+    &ldquo;id&rdquo;: 1,
+    &ldquo;name&rdquo;: &ldquo;Fluffums&rdquo;,
+    &ldquo;breed&rdquo;: &ldquo;calico&rdquo;,
+    &ldquo;fluffiness&rdquo;: 6,
+    &ldquo;cuteness&rdquo;: 7
+  },
+  {
+    &ldquo;id&rdquo;: 2,
+    &ldquo;name&rdquo;: &ldquo;Max&rdquo;,
+    &ldquo;breed&rdquo;: &ldquo;unknown&rdquo;,
+    &ldquo;fluffiness&rdquo;: 5,
+    &ldquo;cuteness&rdquo;: 10
+  }
+]
+&ldquo;`
+
+This endpoint retrieves all kittens.
+
+### HTTP Request
+
+`GET http://example.com/api/kittens`
+
+### Query Parameters
+
+Parameter | Default | Description
+&mdash;&mdash;&mdash; | &mdash;&mdash;- | &mdash;&mdash;&mdash;&ndash;
+include_cats | false | If set to true, the result will also include cats.
+available | true | If set to false, the result will include kittens that have already been adopted.
 
 <aside class="success">
 Remember — a happy kitten is an authenticated kitten!
 </aside>
 
-<h2 id="get-a-specific-kitten">Get a Specific Kitten</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+## Get a Specific Kitten
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+&rdquo;`ruby
+require 'kittn&rsquo;
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+api = Kittn::APIClient.authorize!('meowmeowmeow&rsquo;)
+api.kittens.get(2)
+&ldquo;`
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves a specific kitten.</p>
+&rdquo;`python
+import kittn
+
+api = kittn.authorize('meowmeowmeow&rsquo;)
+api.kittens.get(2)
+&ldquo;`
+
+&rdquo;`shell
+curl &ldquo;http://example.com/api/kittens/2&rdquo;
+  -H &ldquo;Authorization: meowmeowmeow&rdquo;
+&ldquo;`
+
+&rdquo;`javascript
+const kittn = require('kittn&rsquo;);
+
+let api = kittn.authorize('meowmeowmeow&rsquo;);
+let max = api.kittens.get(2);
+&ldquo;`
+
+> The above command returns JSON structured like this:
+
+&rdquo;`json
+{
+  &ldquo;id&rdquo;: 2,
+  &ldquo;name&rdquo;: &ldquo;Max&rdquo;,
+  &ldquo;breed&rdquo;: &ldquo;unknown&rdquo;,
+  &ldquo;fluffiness&rdquo;: 5,
+  &ldquo;cuteness&rdquo;: 10
+}
+&ldquo;`
+
+This endpoint retrieves a specific kitten.
 
 <aside class="warning">Inside HTML code blocks like this one, you can&rsquo;t use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
 
-<h3 id="http-request">HTTP Request</h3>
+### HTTP Request
 
-<p><code class="prettyprint">GET http://example.com/kittens/&lt;ID&gt;</code></p>
+`GET http://example.com/kittens/<ID>`
 
-<h3 id="url-parameters">URL Parameters</h3>
+### URL Parameters
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
-</tr>
-</tbody></table>
+Parameter | Description
+&mdash;&mdash;&mdash; | &mdash;&mdash;&mdash;&ndash;
+ID | The ID of the kitten to retrieve
+
+&ndash;>
 
           <h1 id="errors">Errors</h1>
 
@@ -366,9 +584,6 @@ Remember — a happy kitten is an authenticated kitten!
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
-                <a href="#" data-language-name="javascript">javascript</a>
           </div>
       </div>
     </div>
