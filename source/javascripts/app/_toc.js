@@ -5,6 +5,11 @@
 (function (global) {
   'use strict';
 
+  var closeToc = function() {		
+     $(".tocify-wrapper").removeClass('open');		
+     $("#nav-button").removeClass('open');
+   };
+
   var makeToc = function() {
     global.toc = $("#toc").tocify({
       selectors: 'h1, h2, h3',
@@ -12,12 +17,12 @@
       theme: 'none',
       smoothScroll: false,
       showEffectSpeed: 0,
-      hideEffectSpeed: 180,
+      hideEffectSpeed: 0,
       ignoreSelector: '.toc-ignore',
       highlightOffset: 60,
       scrollTo: -1,
-      showAndHide: false,
-      scrollHistory: true,
+      showAndHide: true,
+      scrollHistory: false,
       hashGenerator: function (text, element) {
         return element.prop('id');
       }
@@ -28,6 +33,9 @@
       $("#nav-button").toggleClass('open');
       return false;
     });
+
+    $(".page-wrapper").click(closeToc);		
+    $(".tocify-item").click(closeToc);
   };
 
   // Hack to make already open sections to start opened,
