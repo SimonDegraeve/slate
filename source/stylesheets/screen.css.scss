@@ -634,10 +634,10 @@ html, body {
   background-color: $code-bg;
 }
 
-.cw-CodeOverlay {
-  position: absolute;
-  right: 0;
-  width: 50%;
-  height: 100%;
-  background: $code-bg;
+.cw-Logo {
+  padding: 20px;
+  
+  img {
+    max-width: 100%;
+  }
 }
