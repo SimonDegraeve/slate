@@ -641,3 +641,13 @@ html, body {
     max-width: 100%;
   }
 }
+
+.tocify-subheader[data-tag="2"] {
+  display: block !important;
+}
+
+.tocify-subheader[data-tag="3"] {
+  li {
+    padding-left: 15px;
+  }
+}
