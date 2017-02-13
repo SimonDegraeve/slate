@@ -46,16 +46,71 @@ See [Lagom Support](https://support.lightbend.com/customer/en/portal/private/cas
 -->
 
 # Core Resources
+## Economic Activities
+This is an object representing a type of economic activity.
+
+We currently have three main economic activities: `freight_forwarder`, `transporter` or `merchant`. 
+Each of them comes with mandatory and optional, documents, resources, registration flow and ux.
+
+### Retrieve all economic activities
+> Example Request
+
+```shell
+curl -X GET "http://localhost:9000/api/v5/economic_activities"
+```
+
+> Example Response
+
+```json
+[
+    {
+        "object": "economic_activity",
+        "type": "freight_forwarder"
+    },
+    {
+        "object": "economic_activity",
+        "type": "transporter"
+    },
+    {
+        "object": "economic_activity",
+        "type": "merchant"
+    }
+]
+```
+
+Activity | Description
+--------- | -----------
+transporter | A transportation organization executes transportation workloads. It has workers and mandatory licences and liabilities documents.
+merchant |  A merchant organization with create workload
+freight_forwarder | A freight forwarding organization aggregates workloads from various merchant and manages subscription with merchants and transporters.
+
+Some organization might have multiple activities :
+
+* A transporter can also be a merchant, it will expose the workload creation interface for their exclusive clients.
+* A merchant can be a transporter, allowing some of its vendors to become workers during or after their working day.
+* A freight_forwarder can be a merchant, exposing the workload creation interface to end users.
+
+This flexibility is key and should be at the center of the user experience.
+
+<aside class="warning">
+Currentlty, only one freight_forwarder organization can be created.
+</aside>
+
+
 ## Organizations
 This is an object representing a organization. 
-You can retrieve it to see the area where the organization is deployed, it's documents and stripe account information.
+You can retrieve it to see the area where the organization is deployed, its documents and stripe account information.
 
 ### The organization object
 
 ```json
 {
+  "object": "organization",
   "id": "2aa89fa2-be81-4acf-9a48-50a199a9f9b7",
-  "type": "freight_forwarder",
+  "economic_activities": [{
+    "object": "economic_activity",
+    "value": "freight_forwarder"
+  }],
   "area": {
     "type": "Feature",
     "id": "0c5457b6-1209-41e9-9148-556841b0e93d",
@@ -86,7 +141,7 @@ You can retrieve it to see the area where the organization is deployed, it's doc
     {
       "type": "kbis",
       "id": "b84bae4a-ba6f-4264-a6d2-fc0d70674d1c",
-      "url": "https://s3-eu-west-1.amazonaws.com/toutatis/development/legal_documents/org-2aa89fa2-be81-4acf-9a48-50a199a9f9b7/1486980992095.pdf",
+      "url": "https://s3-eu-west-1.amazonaws.com/toutatis/.../1486980992095.pdf",
       "publicLink": null,
       "createdAt": 1486980993,
       "validatedAt": null,
@@ -96,7 +151,7 @@ You can retrieve it to see the area where the organization is deployed, it's doc
     {
       "type": "identity",
       "id": "56e2043a-93be-4bcf-9a76-9ac73964d9dd",
-      "url": "https://s3-eu-west-1.amazonaws.com/toutatis/development/legal_documents/org-2aa89fa2-be81-4acf-9a48-50a199a9f9b7/1486980997149.pdf",
+      "url": "https://s3-eu-west-1.amazonaws.com/toutatis/.../1486980997149.pdf",
       "publicLink": null,
       "createdAt": 1486980998,
       "validatedAt": null,
@@ -111,23 +166,26 @@ You can retrieve it to see the area where the organization is deployed, it's doc
 
 Attribute | Description
 --------- | -----------
+object (string) | `organization`
 id (uuid) | unique identifier
-type (string) | `freight_forwarder`, `transporter` or `merchant`
+economic_activities (array) | all organization's activities
 name (string) | the organization public name, used in the UI
-area (shape) | a Google place shape
+area (shape) | a google place shape
 standalone_account (stripe_account) | A stripe [standalone](https://stripe.com/docs/connect/standalone-accounts) account that is controlled by the organization's creator, mainly used to collect and update IBAN information.
 documents (array) | All the legal documents associated with the organization
-
 
 ### Retrieve an organization
 > Example Request
 
 ```shell
-curl -X GET -H "Authorization: Bearer AAA.bbb.CCC"
-"http://localhost:9000/api/organizations/2aa89fa2-be81-4acf-9a48-50a199a9f9b7"
+curl -X GET 
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+  eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8v.
+  yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw"
+"http://localhost:9000/api/v5/organizations/2aa89fa2-be81-4acf-9a48-50a199a9f9b7"
 ```
 
-Retrieves the organization, if the authenticated user has `Read permission on that organization.
+Retrieves the organization, if the authenticated user has `Read` permission on that organization.
 
 #### Attributes
 
@@ -146,9 +204,11 @@ id (uuid) | unique identifier
 }
 ```
 
-Returns an organization object, or a 401 error.
+Returns an organization object, or a `401` error.
 
 ### List all organizations
+
+## Documents
 ## Users
 
 ## Shapes
@@ -192,6 +252,7 @@ A Shape has `properties` associated with the Geometry object.
 ```
 
 > Google Place Shape Structure
+
 ```json
 {
   "type": "Feature",
@@ -227,8 +288,6 @@ A plan contains the pricing information for different services and feature level
 ## Subscriptions
 Subscriptions allow an organization to charge an other organization on a recurring basis. 
 A subscription ties a customer to a particular plan.
-
-## Documents
 
 # Transporters
 ## Vehicles
