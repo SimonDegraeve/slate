@@ -33,7 +33,7 @@ an error with Toutatis's servers.
 Not all errors map cleanly onto HTTP response codes, however. 
 When a request is valid but does not complete successfully (e.g., a quote is declined), we return a `402` error code.
 To understand why a card is declined, refer to the list of codes in the documentation.
-``
+
 <!--
 ## Expanding Objects
 See [Lagom Support](https://support.lightbend.com/customer/en/portal/private/cases/8094)
@@ -86,7 +86,7 @@ You can retrieve it to see the area where the organization is deployed, it's doc
     {
       "type": "kbis",
       "id": "b84bae4a-ba6f-4264-a6d2-fc0d70674d1c",
-      "url": "https://s3-eu-west-1.amazonaws.com/toutatis/development/legal_documents/org-2aa89fa2-be81-4acf-9a48-50a199a9f9b7/1486980992095_-.js",
+      "url": "https://s3-eu-west-1.amazonaws.com/toutatis/development/legal_documents/org-2aa89fa2-be81-4acf-9a48-50a199a9f9b7/1486980992095.pdf",
       "publicLink": null,
       "createdAt": 1486980993,
       "validatedAt": null,
@@ -96,7 +96,7 @@ You can retrieve it to see the area where the organization is deployed, it's doc
     {
       "type": "identity",
       "id": "56e2043a-93be-4bcf-9a76-9ac73964d9dd",
-      "url": "https://s3-eu-west-1.amazonaws.com/toutatis/development/legal_documents/org-2aa89fa2-be81-4acf-9a48-50a199a9f9b7/1486980997149_-.js",
+      "url": "https://s3-eu-west-1.amazonaws.com/toutatis/development/legal_documents/org-2aa89fa2-be81-4acf-9a48-50a199a9f9b7/1486980997149.pdf",
       "publicLink": null,
       "createdAt": 1486980998,
       "validatedAt": null,
