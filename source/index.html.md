@@ -136,7 +136,6 @@ You can retrieve it to see the area where the organization is deployed, its docu
     "stripe_user_id": "acct_19mgs6DRAf7AOYNt",
     "scope": "read_write"
   },
-  "general_contractor_ids": [],
   "documents": [
     {
       "type": "kbis",
@@ -158,7 +157,9 @@ You can retrieve it to see the area where the organization is deployed, its docu
       "deletedAt": null,
       "previousDocumentId": null
     }
-  ]
+  ],
+  "created_at": 1487064060,
+  "deleted_at": null
 }
 ```
 
@@ -173,6 +174,8 @@ name (string) | the organization public name, used in the UI
 area (shape) | a google place shape
 standalone_account (stripe_account) | A stripe [standalone](https://stripe.com/docs/connect/standalone-accounts) account that is controlled by the organization's creator, mainly used to collect and update IBAN information.
 documents (array) | All the legal documents associated with the organization
+created_at (integer) | object creation timestamp
+deleted_at (integer, optional) | object deletion timestamp
 
 ### Retrieve an organization
 > Example Request
@@ -185,30 +188,119 @@ curl -X GET
 "http://localhost:9000/api/v5/organizations/2aa89fa2-be81-4acf-9a48-50a199a9f9b7"
 ```
 
-Retrieves the organization, if the authenticated user has `Read` permission on that organization.
+Retrieves the organization, if the authenticated user has `READ` permission on that organization.
 
-#### Attributes
+#### Arguments
 
-Attribute | Description
+Arguments | Description
 --------- | -----------
 id (uuid) | unique identifier
 
-#### Returns
-> Error Response
+Returns an organization object, or a `401` error.
 
-```json
-{
-  "code": 401,
-  "message": "Not authorized",
-  "documentation": ""
-}
+### Update an organization
+> Example Request
+
+```shell
+curl -X POST 
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+  eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8v.
+  yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw"
+"http://localhost:9000/api/v5/organizations/2aa89fa2-be81-4acf-9a48-50a199a9f9b7"
+-d name="Super Speed Corporation"
 ```
+
+Updates the specified organization by setting the values of the parameters passed. 
+Any parameters not provided will be left unchanged. 
+For example, if you pass the area parameter, that becomes the organization’s active area.
+This request accepts mostly the same arguments as the customer creation call.
+
+#### Arguments
+
+Arguments | Description
+--------- | -----------
+economic_activities (array) | all organization's activities
+name (string) | the organization public name, used in the UI
+area (shape) | a google place shape
+
+### Delete an organization
+> Example Request
+
+```shell
+curl -X DELETE 
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+  eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8v.
+  yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw"
+"http://localhost:9000/api/v5/organizations/2aa89fa2-be81-4acf-9a48-50a199a9f9b7"
+```
+
+Delete the organization, if the authenticated user has `DELETE` permission on that organization.
+This action will have multiple side-effects :
+
+* Delete all assignations
+* Delete all workloads
+* Delete all subscriptions
+
+#### Arguments
+
+Arguments | Description
+--------- | -----------
+id (uuid) | unique identifier
 
 Returns an organization object, or a `401` error.
 
 ### List all organizations
+> Example Request
+
+```shell
+curl -X GET 
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+  eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8v.
+  yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw"
+"http://localhost:9000/api/v5/organizations"
+```
+
+> Example Response
+
+```json
+{
+    "object": "list",
+    "offset": 0,
+    "limit": 25,
+    "size": 119,
+    "items": [
+        {
+            "object": "organization",
+            "id": "2aa89fa2-be81-4acf-9a48-50a199a9f9b7",
+            "economic_activities": [{
+            "object": "economic_activity",
+            "value": "freight_forwarder"
+            }],
+            ...
+        }
+    ...
+    ]
+}
+```
+
+Returns a list of organizations.
+The organizations are returned sorted by creation date, with the most recent organizations appearing first.
+
+#### Arguments
+
+Arguments | Description
+--------- | -----------
+name_like (string) | filter organization by their name
+activities (array) | comma separated economic activities performed by the organizations
+area (string) | shape identifier intersecting with organization's area
+created_at_lte | Return values where the created_at field is before or equal to this timestamp.
+created_at_gte | Return values where the created_at field is after or equal to this timestamp.
+limit (integer, default is 25) | A limit on the number of objects to be returned.
+offset (integer, default is 0) | A cursor for use in pagination.
+deleted (boolean, default to false) | should include deleted organization
 
 ## Documents
+
 ## Users
 
 ## Shapes
