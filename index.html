@@ -125,29 +125,248 @@
 
 <h2 id="authentication">Authentication</h2>
 
+<blockquote>
+<p><code class="prettyprint">-H &quot;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw&quot;</code></p>
+</blockquote>
+
+<p>Authentication is performed using Cognito. 
+See <a href="http://docs.aws.amazon.com/cognitoidentity/latest/APIReference/Welcome.html">Documentation</a>. </p>
+
+<p>Once you retrieved a token from Cognito&rsquo;s SDK, you should add it in your headers.</p>
+
 <h2 id="errors">Errors</h2>
 
-<h2 id="expanding-objects">Expanding Objects</h2>
+<p>Toutatis uses conventional HTTP response codes to indicate the success or failure of an API request. 
+In general, codes in the <code class="prettyprint">2xx</code> range indicate success, codes in the <code class="prettyprint">4xx</code> range indicate an error that failed given the information provided (e.g., a required parameter was omitted, a charge failed, etc.), and codes in the <code class="prettyprint">5xx</code> range indicate 
+an error with Toutatis&rsquo;s servers.</p>
 
-<h2 id="idempotent-request">Idempotent Request</h2>
+<p>Not all errors map cleanly onto HTTP response codes, however. 
+When a request is valid but does not complete successfully (e.g., a quote is declined), we return a <code class="prettyprint">402</code> error code.
+To understand why a card is declined, refer to the list of codes in the documentation.</p>
 
-<h2 id="metadata">Metadata</h2>
+<!--
+## Expanding Objects
+See [Lagom Support](https://support.lightbend.com/customer/en/portal/private/cases/8094)
 
-<h2 id="pagination">Pagination</h2>
-
-<h2 id="request-ids">Request IDs</h2>
-
-<h2 id="versioning">Versioning</h2>
+## Idempotent Request
+## Metadata
+## Pagination 
+## Versioning
+## Request IDs
+-->
 
 <h1 id="core-resources">Core Resources</h1>
 
+<h2 id="economic-activities">Economic Activities</h2>
+
+<p>This is an object representing a type of economic activity.</p>
+
+<p>We currently have three main economic activities: <code class="prettyprint">freight_forwarder</code>, <code class="prettyprint">transporter</code> or <code class="prettyprint">merchant</code>. 
+Each of them comes with mandatory and optional, documents, resources, registration flow and ux.</p>
+
+<h3 id="retrieve-all-economic-activities">Retrieve all economic activities</h3>
+
+<blockquote>
+<p>Example Request</p>
+</blockquote>
+<pre class="highlight shell"><code>curl -X GET <span class="s2">"http://localhost:9000/api/v5/economic_activities"</span>
+</code></pre>
+<blockquote>
+<p>Example Response</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"economic_activity"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"freight_forwarder"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"economic_activity"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"transporter"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"economic_activity"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"merchant"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<table><thead>
+<tr>
+<th>Activity</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>transporter</td>
+<td>A transportation organization executes transportation workloads. It has workers and mandatory licences and liabilities documents.</td>
+</tr>
+<tr>
+<td>merchant</td>
+<td>A merchant organization with create workload</td>
+</tr>
+<tr>
+<td>freight_forwarder</td>
+<td>A freight forwarding organization aggregates workloads from various merchant and manages subscription with merchants and transporters.</td>
+</tr>
+</tbody></table>
+
+<p>Some organization might have multiple activities :</p>
+
+<ul>
+<li>A transporter can also be a merchant, it will expose the workload creation interface for their exclusive clients.</li>
+<li>A merchant can be a transporter, allowing some of its vendors to become workers during or after their working day.</li>
+<li>A freight_forwarder can be a merchant, exposing the workload creation interface to end users.</li>
+</ul>
+
+<p>This flexibility is key and should be at the center of the user experience.</p>
+
+<aside class="warning">
+Currentlty, only one freight_forwarder organization can be created.
+</aside>
+
 <h2 id="organizations">Organizations</h2>
 
+<p>This is an object representing a organization. 
+You can retrieve it to see the area where the organization is deployed, its documents and stripe account information.</p>
+
 <h3 id="the-organization-object">The organization object</h3>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"organization"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2aa89fa2-be81-4acf-9a48-50a199a9f9b7"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"economic_activities"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+    </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"economic_activity"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"freight_forwarder"</span><span class="w">
+  </span><span class="p">}],</span><span class="w">
+  </span><span class="nt">"area"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Feature"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0c5457b6-1209-41e9-9148-556841b0e93d"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"geometry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Point"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">2.546583</span><span class="p">,</span><span class="w"> </span><span class="mf">48.898893</span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"google_place"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"place_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ChIJEW4ls3nVwkcRYGNkgT7xCgQ"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lille"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"long_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"France"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"formatted_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lille, France"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"reference"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CmRbAAA595P_bQL1j1J4EjACCZzsFehiCZWci8d-CmRbAAA595P_bQL1j1J4EjACCZzsFehiCZWci8d"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"deleted_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Super Precise SAS"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"standalone_account"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"livemode"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"token_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bearer"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"stripe_publishable_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pk_test_QhzMhY1r8wMqDv7ewuSR7Zau"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"stripe_user_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acct_19mgs6DRAf7AOYNt"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"read_write"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"general_contractor_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="nt">"documents"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kbis"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"b84bae4a-ba6f-4264-a6d2-fc0d70674d1c"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://s3-eu-west-1.amazonaws.com/toutatis/.../1486980992095.pdf"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"publicLink"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1486980993</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"validatedAt"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"deletedAt"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"previousDocumentId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"identity"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"56e2043a-93be-4bcf-9a76-9ac73964d9dd"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://s3-eu-west-1.amazonaws.com/toutatis/.../1486980997149.pdf"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"publicLink"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1486980998</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"validatedAt"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"deletedAt"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"previousDocumentId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h4 id="attributes">Attributes</h4>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>object (string)</td>
+<td><code class="prettyprint">organization</code></td>
+</tr>
+<tr>
+<td>id (uuid)</td>
+<td>unique identifier</td>
+</tr>
+<tr>
+<td>economic_activities (array)</td>
+<td>all organization&rsquo;s activities</td>
+</tr>
+<tr>
+<td>name (string)</td>
+<td>the organization public name, used in the UI</td>
+</tr>
+<tr>
+<td>area (shape)</td>
+<td>a google place shape</td>
+</tr>
+<tr>
+<td>standalone_account (stripe_account)</td>
+<td>A stripe <a href="https://stripe.com/docs/connect/standalone-accounts">standalone</a> account that is controlled by the organization&rsquo;s creator, mainly used to collect and update IBAN information.</td>
+</tr>
+<tr>
+<td>documents (array)</td>
+<td>All the legal documents associated with the organization</td>
+</tr>
+</tbody></table>
 
 <h3 id="retrieve-an-organization">Retrieve an organization</h3>
 
+<blockquote>
+<p>Example Request</p>
+</blockquote>
+<pre class="highlight shell"><code>curl -X GET 
+-H <span class="s2">"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+  eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8v.
+  yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw"</span>
+<span class="s2">"http://localhost:9000/api/v5/organizations/2aa89fa2-be81-4acf-9a48-50a199a9f9b7"</span>
+</code></pre>
+<p>Retrieves the organization, if the authenticated user has <code class="prettyprint">Read</code> permission on that organization.</p>
+
+<h4 id="attributes">Attributes</h4>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id (uuid)</td>
+<td>unique identifier</td>
+</tr>
+</tbody></table>
+
+<h4 id="returns">Returns</h4>
+
+<blockquote>
+<p>Error Response</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">401</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Not authorized"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"documentation"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Returns an organization object, or a <code class="prettyprint">401</code> error.</p>
+
 <h3 id="list-all-organizations">List all organizations</h3>
+
+<h2 id="documents">Documents</h2>
 
 <h2 id="users">Users</h2>
 
@@ -163,18 +382,54 @@
 <p>Postal Code Shape Structure</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"geometry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Point"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">125.6</span><span class="p">,</span><span class="w"> </span><span class="mf">10.1</span><span class="p">]</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"postal_code"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"postal_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"59000"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"insee_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"59000"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"city_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lille"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Euratechnolgies"</span><span class="w">
-    </span><span class="p">}</span><span class="w">
+  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Feature"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0c5457b6-1209-41e9-9148-556841b0e93d"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"geometry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MultiPolygon"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">[</span><span class="w">
+        </span><span class="p">[</span><span class="w">
+          </span><span class="p">[</span><span class="w">
+            </span><span class="mf">2.546583</span><span class="p">,</span><span class="w">
+            </span><span class="mf">48.898893</span><span class="w">
+          </span><span class="p">],</span><span class="w">
+          </span><span class="p">[</span><span class="w">
+            </span><span class="mf">2.53848</span><span class="p">,</span><span class="w">
+            </span><span class="mf">48.899759</span><span class="w">
+          </span><span class="p">],</span><span class="w">
+          </span><span class="err">...</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"postal_code"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"insee_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"93014"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"city_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CLICHY SOUS BOIS"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"postal_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"93390"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"deleted_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Google Place Shape Structure</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Feature"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0c5457b6-1209-41e9-9148-556841b0e93d"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"geometry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Point"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">2.546583</span><span class="p">,</span><span class="w"> </span><span class="mf">48.898893</span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"google_place"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"place_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ChIJEW4ls3nVwkcRYGNkgT7xCgQ"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lille"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"long_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"France"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"formatted_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lille, France"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"reference"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CmRbAAA595P_bQL1j1J4EjACCZzsFehiCZWci8d-CmRbAAA595P_bQL1j1J4EjACCZzsFehiCZWci8d"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"deleted_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <h2 id="invoices">Invoices</h2>
@@ -196,8 +451,6 @@ a regular billing cycle. see <a href="https://stripe.com/docs/api#invoiceitems">
 
 <p>Subscriptions allow an organization to charge an other organization on a recurring basis. 
 A subscription ties a customer to a particular plan.</p>
-
-<h2 id="documents">Documents</h2>
 
 <h1 id="transporters">Transporters</h1>
 
