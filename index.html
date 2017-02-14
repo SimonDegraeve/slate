@@ -261,7 +261,6 @@ You can retrieve it to see the area where the organization is deployed, its docu
     </span><span class="nt">"stripe_user_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acct_19mgs6DRAf7AOYNt"</span><span class="p">,</span><span class="w">
     </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"read_write"</span><span class="w">
   </span><span class="p">},</span><span class="w">
-  </span><span class="nt">"general_contractor_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
   </span><span class="nt">"documents"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
       </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kbis"</span><span class="p">,</span><span class="w">
@@ -283,7 +282,9 @@ You can retrieve it to see the area where the organization is deployed, its docu
       </span><span class="nt">"deletedAt"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
       </span><span class="nt">"previousDocumentId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
     </span><span class="p">}</span><span class="w">
-  </span><span class="p">]</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1487064060</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"deleted_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <h4 id="attributes">Attributes</h4>
@@ -322,6 +323,14 @@ You can retrieve it to see the area where the organization is deployed, its docu
 <td>documents (array)</td>
 <td>All the legal documents associated with the organization</td>
 </tr>
+<tr>
+<td>created_at (integer)</td>
+<td>object creation timestamp</td>
+</tr>
+<tr>
+<td>deleted_at (integer, optional)</td>
+<td>object deletion timestamp</td>
+</tr>
 </tbody></table>
 
 <h3 id="retrieve-an-organization">Retrieve an organization</h3>
@@ -335,13 +344,13 @@ You can retrieve it to see the area where the organization is deployed, its docu
   yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw"</span>
 <span class="s2">"http://localhost:9000/api/v5/organizations/2aa89fa2-be81-4acf-9a48-50a199a9f9b7"</span>
 </code></pre>
-<p>Retrieves the organization, if the authenticated user has <code class="prettyprint">Read</code> permission on that organization.</p>
+<p>Retrieves the organization, if the authenticated user has <code class="prettyprint">READ</code> permission on that organization.</p>
 
-<h4 id="attributes">Attributes</h4>
+<h4 id="arguments">Arguments</h4>
 
 <table><thead>
 <tr>
-<th>Attribute</th>
+<th>Arguments</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
@@ -351,20 +360,160 @@ You can retrieve it to see the area where the organization is deployed, its docu
 </tr>
 </tbody></table>
 
-<h4 id="returns">Returns</h4>
+<p>Returns an organization object, or a <code class="prettyprint">401</code> error.</p>
+
+<h3 id="update-an-organization">Update an organization</h3>
 
 <blockquote>
-<p>Error Response</p>
+<p>Example Request</p>
 </blockquote>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">401</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Not authorized"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"documentation"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
+<pre class="highlight shell"><code>curl -X POST 
+-H <span class="s2">"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+  eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8v.
+  yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw"</span>
+<span class="s2">"http://localhost:9000/api/v5/organizations/2aa89fa2-be81-4acf-9a48-50a199a9f9b7"</span>
+-d <span class="nv">name</span><span class="o">=</span><span class="s2">"Super Speed Corporation"</span>
+</code></pre>
+<p>Updates the specified organization by setting the values of the parameters passed. 
+Any parameters not provided will be left unchanged. 
+For example, if you pass the area parameter, that becomes the organization’s active area.
+This request accepts mostly the same arguments as the customer creation call.</p>
+
+<h4 id="arguments">Arguments</h4>
+
+<table><thead>
+<tr>
+<th>Arguments</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>economic_activities (array)</td>
+<td>all organization&rsquo;s activities</td>
+</tr>
+<tr>
+<td>name (string)</td>
+<td>the organization public name, used in the UI</td>
+</tr>
+<tr>
+<td>area (shape)</td>
+<td>a google place shape</td>
+</tr>
+</tbody></table>
+
+<h3 id="delete-an-organization">Delete an organization</h3>
+
+<blockquote>
+<p>Example Request</p>
+</blockquote>
+<pre class="highlight shell"><code>curl -X DELETE 
+-H <span class="s2">"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+  eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8v.
+  yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw"</span>
+<span class="s2">"http://localhost:9000/api/v5/organizations/2aa89fa2-be81-4acf-9a48-50a199a9f9b7"</span>
+</code></pre>
+<p>Delete the organization, if the authenticated user has <code class="prettyprint">DELETE</code> permission on that organization.
+This action will have multiple side-effects :</p>
+
+<ul>
+<li>Delete all assignations</li>
+<li>Delete all workloads</li>
+<li>Delete all subscriptions</li>
+</ul>
+
+<h4 id="arguments">Arguments</h4>
+
+<table><thead>
+<tr>
+<th>Arguments</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id (uuid)</td>
+<td>unique identifier</td>
+</tr>
+</tbody></table>
+
 <p>Returns an organization object, or a <code class="prettyprint">401</code> error.</p>
 
 <h3 id="list-all-organizations">List all organizations</h3>
+
+<blockquote>
+<p>Example Request</p>
+</blockquote>
+<pre class="highlight shell"><code>curl -X GET 
+-H <span class="s2">"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+  eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8v.
+  yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw"</span>
+<span class="s2">"http://localhost:9000/api/v5/organizations"</span>
+</code></pre>
+<blockquote>
+<p>Example Response</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"list"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"offset"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"limit"</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">119</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"organization"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2aa89fa2-be81-4acf-9a48-50a199a9f9b7"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"economic_activities"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+            </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"economic_activity"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"freight_forwarder"</span><span class="w">
+            </span><span class="p">}],</span><span class="w">
+            </span><span class="err">...</span><span class="w">
+        </span><span class="err">}</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Returns a list of organizations.
+The organizations are returned sorted by creation date, with the most recent organizations appearing first.</p>
+
+<h4 id="arguments">Arguments</h4>
+
+<table><thead>
+<tr>
+<th>Arguments</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name_like (string)</td>
+<td>filter organization by their name</td>
+</tr>
+<tr>
+<td>activities (array)</td>
+<td>comma separated economic activities performed by the organizations</td>
+</tr>
+<tr>
+<td>area (string)</td>
+<td>shape identifier intersecting with organization&rsquo;s area</td>
+</tr>
+<tr>
+<td>created_at_lte</td>
+<td>Return values where the created_at field is before or equal to this timestamp.</td>
+</tr>
+<tr>
+<td>created_at_gte</td>
+<td>Return values where the created_at field is after or equal to this timestamp.</td>
+</tr>
+<tr>
+<td>limit (integer, default is 25)</td>
+<td>A limit on the number of objects to be returned.</td>
+</tr>
+<tr>
+<td>offset (integer, default is 0)</td>
+<td>A cursor for use in pagination.</td>
+</tr>
+<tr>
+<td>deleted (boolean, default to false)</td>
+<td>should include deleted organization</td>
+</tr>
+</tbody></table>
 
 <h2 id="documents">Documents</h2>
 
